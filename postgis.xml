@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Map srs="+init=epsg:4326" background-color="rgb(233,233,233)">
+
+    <Style name="point">
+        <Rule>
+            <Filter>[type]='ST_Point'</Filter>
+            <MarkersSymbolizer allow-overlap="true" fill="green"/>
+            <TextSymbolizer face-name="DejaVu Sans Book" allow-overlap="true" dy="+7">
+                'point'
+            </TextSymbolizer>
+        </Rule>
+    </Style>
+
+    <Style name="point-polygon">
+        <Rule>
+            <Filter>[type]='ST_Polygon'</Filter>
+            <MarkersSymbolizer allow-overlap="true" fill="green" placement="point"/>
+            <TextSymbolizer face-name="DejaVu Sans Book" allow-overlap="true" dy="+7">
+                'point-polygon'
+            </TextSymbolizer>
+        </Rule>
+    </Style>
+
+    <Style name="point-multipolygon">
+        <Rule>
+            <Filter>[type]='ST_MultiPolygon'</Filter>
+            <MarkersSymbolizer allow-overlap="true" fill="red" placement="point"/>
+            <TextSymbolizer face-name="DejaVu Sans Book" allow-overlap="true" dy="-7">
+                'point-multipolygon'
+            </TextSymbolizer>
+        </Rule>
+    </Style>
+
+    <Style name="multipoint">
+        <Rule>
+            <Filter>[type]='ST_MultiPoint'</Filter>
+            <MarkersSymbolizer allow-overlap="true" fill="blue"/>
+            <TextSymbolizer face-name="DejaVu Sans Book" allow-overlap="true" dy="+7">
+                'multipoint'
+            </TextSymbolizer>
+        </Rule>
+    </Style>
+
+    <Style name="linestring">
+        <Rule>
+            <Filter>[type]='ST_LineString'</Filter>
+            <LineSymbolizer />
+            <TextSymbolizer placement="line" face-name="DejaVu Sans Book" allow-overlap="true" dy="-10">
+                'linestring'
+            </TextSymbolizer>
+        </Rule>
+    </Style>
+
+    <Style name="multilinestring">
+        <Rule>
+            <Filter>[type]='ST_MultiLineString'</Filter>
+            <LineSymbolizer />
+            <TextSymbolizer placement="line" face-name="DejaVu Sans Book" allow-overlap="true" dy="-10">
+                'multi linestring'
+            </TextSymbolizer>
+        </Rule>
+    </Style>
+
+    <Style name="polygon">
+        <Rule>
+            <Filter>[type]='ST_Polygon'</Filter>
+            <PolygonSymbolizer fill="yellow" fill-opacity=".3"/>
+            <LineSymbolizer stroke="pink"/>
+            <TextSymbolizer placement="line" face-name="DejaVu Sans Book" allow-overlap="true" dy="-10">
+                'p            o            l            y            g            o            n'
+            </TextSymbolizer>
+        </Rule>
+    </Style>
+
+
+    <Style name="multipolygon">
+        <Rule>
+            <Filter>[type]='ST_MultiPolygon'</Filter>
+            <PolygonSymbolizer fill="red" fill-opacity=".3"/>
+            <LineSymbolizer stroke="green"/>
+            <TextSymbolizer placement="line" face-name="DejaVu Sans Book" allow-overlap="true" dy="10">
+                'm u l t i p o l y g o n'
+            </TextSymbolizer>
+        </Rule>
+    </Style>
+
+
+    <Style name="collection">
+        <Rule>
+            <Filter>[type]='ST_GeometryCollection'</Filter>
+            <PolygonSymbolizer fill="yellow"/>
+            <LineSymbolizer stroke="pink"/>
+            <MarkersSymbolizer allow-overlap="true" placement="point"/>
+        </Rule>
+    </Style>
+
+    <Layer name="test" srs="+init=epsg:4326">
+
+        <StyleName>multipolygon</StyleName>
+        <StyleName>point</StyleName>
+        <StyleName>linestring</StyleName>
+        <StyleName>point-polygon</StyleName>
+        <StyleName>multilinestring</StyleName>
+        <StyleName>polygon</StyleName>
+
+<!-- these are buggy in mapnik unless multiple_geometries=true
+see: https://github.com/mapnik/mapnik/issues?sort=created&labels=multigeom+robustness&direction=desc&state=open
+-->
+        <StyleName>point-multipolygon</StyleName>
+        <StyleName>multipoint</StyleName>
+
+<!--
+        <StyleName>collection</StyleName>
+-->
+
+        <Datasource>
+            <Parameter name="dbname">geometries</Parameter>
+            <Parameter name="geometry_field">geom</Parameter>
+            <Parameter name="multiple_geometries">true</Parameter>
+            <Parameter name="srid">4326</Parameter>
+            <Parameter name="table">
+                (SELECT geom, ST_GeometryType(geom) as type 
+                 FROM test
+                 ORDER BY ST_Area(geom) desc
+                ) as test
+            </Parameter>
+            <Parameter name="type">postgis</Parameter>
+            <Parameter name="user"/>
+        </Datasource>
+    </Layer>
+</Map>
