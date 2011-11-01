@@ -1,3 +1,7 @@
+/*
+http://en.wikipedia.org/wiki/Well-known_text
+*/
+
 drop table test;
 create table test(gid serial PRIMARY KEY, geom geometry);
 
