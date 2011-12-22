@@ -103,9 +103,6 @@
         <StyleName>multilinestring</StyleName>
         <StyleName>polygon</StyleName>
 
-<!-- these are buggy in mapnik unless multiple_geometries=true
-see: https://github.com/mapnik/mapnik/issues?sort=created&labels=multigeom+robustness&direction=desc&state=open
--->
         <StyleName>point-multipolygon</StyleName>
         <StyleName>multipoint</StyleName>
 

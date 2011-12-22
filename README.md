@@ -74,15 +74,8 @@ Then render the map out:
        point geometry - draws point no matter the value of placement
 
 ## Caveats
-
-* The mapnik postgis plugin accepts an option called `multiple_geometries`, which if true
-  (default is false) triggers flattening of multigeometries into single paths during
-  wkb parsing. This is needed for various renderers in mapnik to cope better with multi-geometries.
-  For example, without it MarkersSymbolizer will only draw the first polygon and mapnik's centroid
-  algorithm will produce bogus results for multipolygon labels.
   
-* TextSymbolizer - labeling centroids of multipolygons does not work properly
-* MarkersSymbolizer on multipolygons only draws first point unless geometries are flattened
+* TextSymbolizer - only the first placeable label for a geometry part will currently show up (https://github.com/mapnik/mapnik/issues/162)
 
 Bugs around multigeometry support are tracked via:
 
